@@ -75,5 +75,7 @@ append your $HOME/.bashrc with
     bash GitHubSetup.sh
     bash SSHSetup.sh
     bash StorageSetup.sh
+        # Set up AWS to screen for pass info
+        # https://github.com/awslabs/git-secrets
     bash CSVSetup.sh
 
