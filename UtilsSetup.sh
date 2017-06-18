@@ -1,0 +1,97 @@
+#!/bin/bash
+
+shopt -s expand_aliases
+source "$HOME/.bashrc"
+
+#########################
+# Bash Parallel Programs
+#########################
+#https://www.gnu.org/software/parallel/parallel_tutorial.html#GNU-Parallel-Tutorial
+
+echo -e "$s0 GNU parallel... $s1"
+
+cd ~
+vers=20170522
+wget http://ftpmirror.gnu.org/parallel/parallel-$vers.tar.bz2
+tar xvfj parallel-$vers.tar.bz2  && rm parallel-$vers.tar.bz2
+cd parallel-$vers
+./configure --prefix=$HOME
+make
+sudo make install
+
+#sudo $(wget -O - pi.dk/3 || curl pi.dk/3/ || fetch -o - http://pi.dk/3) | bash
+#cp $(which parallel) $PREFIX/bin/parallel
+
+
+#########################
+# BASH Shell
+#########################
+vers=4.4
+cd ~ && wget https://ftp.gnu.org/gnu/bash/bash-$vers.tar.gz
+tar -xzf bash-$vers.tar.gz && rm bash-$vers.tar.gz && cd ~/bash-$vers
+./configure --prefix=$HOME && make 
+sudo make install
+
+
+#########################
+# WGET
+#########################
+vers=1.19
+cd ~ && wget https://ftp.gnu.org/gnu/wget/wget-$vers.tar.xz
+tar -xf wget-$vers.tar.xz && rm wget-$vers.tar.xz && cd ~/wget-$vers
+./configure --prefix=$HOME
+make 
+sudo make install
+
+
+#########################
+# CURL
+#########################
+## libcurl
+
+#sudo yum install -y curl-devel
+
+# For HTTPS Support
+## First install SSHSetup.sh to add https support
+#or
+#sudo yum -y install \
+#	openssl098e.x86_64 \
+#	openssl-libs.x86_64 \
+#	openssl-devel.x86_64
+
+
+
+vers=7.54.0
+cd ~ && wget --no-check-certificate "https://curl.haxx.se/download/curl-$vers.tar.gz"
+tar xzvf curl-$vers.tar.gz && rm curl-$vers.tar.gz
+cd ~/curl-$vers
+./configure --with-ssl --prefix=$HOME 
+make
+sudo make install
+
+
+
+#########################
+# MAKE 
+#########################
+
+
+#########################
+# CMAKE 
+#########################
+
+cd ~ 
+vers=3.9
+versa=$vers.0
+wget https://cmake.org/files/v$vers/cmake-$versa-rc2.tar.gz
+tar xzvf cmake-$versa-rc2.tar.gz && rm cmake-$versa-rc2.tar.gz
+cd cmake-$versa-rc2
+./configure --prefix=$HOME 
+gmake
+sudo make install
+
+
+
+
+exit
+
