@@ -1,7 +1,21 @@
 #!/bin/bash
+# bash ~/InstallSetup/ClusterInstall/RSetup.sh
 
 shopt -s expand_aliases
 source "$HOME/.bashrc"
+
+
+#########################
+# Sudo Setup 
+#########################
+
+## For Cluster 
+if [[ $HOME == "/home/jadamso" ]] ; then
+	SUDO=""
+## For Personal
+elif [[ $HOME == "/home/Jadamso" ]] ; then
+	SUDO=sudo
+fi
 
 
 #########################
@@ -118,7 +132,8 @@ fi
 #########################
 
 ## Install
-make && make install 
+make
+$SUDO make install 
 
 ## Rprofile
 cp ~/Rprofile.site ~/lib64/R/etc/Rprofile.site ## Cluster without revolution
@@ -143,6 +158,8 @@ exit
 #    icc -shared -liomp5 -L$ipath-lmkl_rt -o pow_wrp.so pow_wrp.o -L./lib -lR
 #fi
 
+
+exit
 
 #########################
 # RMPI
