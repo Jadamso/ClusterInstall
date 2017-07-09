@@ -16,57 +16,80 @@ elif [[ $HOME == "/home/Jadamso" ]] ; then
 	SUDO=sudo
 fi
 
+#########################
+# GCC PreReqs
+#########################
+
+
+if [[ $@ =~ "-pr" ]] || [[ $@ =~ "--pre-reqs" ]]
+then
+
+    ## GMP
+    vers=6.1.2
+    cd ~
+    wget https://gmplib.org/download/gmp/gmp-$vers.tar.xz
+    tar -xf gmp-$vers.tar.xz && rm gmp-$vers.tar.xz
+    cd ~/gmp-$vers
+    ./configure --prefix=$HOME
+    make
+    $SUDO make install 
+
+
+    ## MPFR
+    vers=3.1.5
+    cd ~
+    wget http://www.mpfr.org/mpfr-current/mpfr-$vers.tar.xz
+    tar -xf mpfr-$vers.tar.xz && rm mpfr-$vers.tar.xz
+    cd ~/mpfr-$vers
+    ./configure --prefix=$HOME
+    make 
+    $SUDO make install
+
+
+    ## MPC
+    vers=1.0.3
+    cd ~
+    wget https://ftp.gnu.org/gnu/mpc/mpc-$vers.tar.gz
+    tar -xzf mpc-$vers.tar.gz && rm mpc-$vers.tar.gz
+    cd ~/mpc-$vers
+    ./configure --prefix=$HOME \
+        --with-gmp=~\
+        --with-mpfr=~ \
+        --with-mpc=~ \
+        --with-gmp-include=~/gmp-6.0.0 \
+        --with-mpfr-include=~/mpfr-3.1.2/src \
+        --with-mpc-include=/opt/install/build/mpc-1.0.2/src --enable-languages=c,c++
+    make
+    $SUDO make install
+
+
+
+    ## GCC prereq
+    $SUDO yum install -y \
+	    zlib-devel.x86_64 \
+	    gcc-go.x86_64
+
+fi
 
 #########################
 # GCC Install
 #########################
 
-
-## GMP
-vers=6.1.2
-cd ~
-wget https://gmplib.org/download/gmp/gmp-$vers.tar.xz
-tar -xf gmp-$vers.tar.xz && rm gmp-$vers.tar.xz
-cd ~/gmp-$vers
-./configure --prefix=$HOME
-make
-$SUDO make install 
-
-
-## MPFR
-vers=3.1.5
-cd ~
-wget http://www.mpfr.org/mpfr-current/mpfr-$vers.tar.xz
-tar -xf mpfr-$vers.tar.xz && rm mpfr-$vers.tar.xz
-cd ~/mpfr-$vers
-./configure --prefix=$HOME
-make 
-$SUDO make install
-
-
-## MPC
-vers=1.0.3
-cd ~
-wget https://ftp.gnu.org/gnu/mpc/mpc-$vers.tar.gz
-tar -xzf mpc-$vers.tar.gz && rm mpc-$vers.tar.gz
-cd ~/mpc-$vers
-./configure --prefix=$HOME
-make
-$SUDO make install
-
-## GCC prereq
-$SUDO yum install -y \
-	zlib-devel.x86_64 \
-	gcc-go.x86_64
-
 ## GCC
 vers=7.1.0
-
 PATH=/usr/bin:$PATH
 cd ~
 wget http://mirrors-usa.go-parts.com/gcc/releases/gcc-$vers/gcc-$vers.tar.gz
 tar -xf gcc-$vers.tar.gz && rm gcc-$vers.tar.gz
 cd ~/gcc-$vers
+
+if [[ $@ =~ "-pr" ]] || [[ $@ =~ "--pre-reqs" ]]
+then 
+    echo "already installed"
+else
+    bash contrib/download_prerequisites
+fi
+
 ./configure \
 	--prefix=$HOME \
     --disable-multilib \
@@ -77,7 +100,13 @@ $SUDO make install
 
 source $HOME/.bashrc
 
+
+
+
 exit
+
+
+
 
 
 # Intel OpenCL RunTime

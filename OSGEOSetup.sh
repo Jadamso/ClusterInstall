@@ -3,6 +3,20 @@
 shopt -s expand_aliases
 source "$HOME/.bashrc"
 
+
+#########################
+# Sudo Setup 
+#########################
+
+## For Cluster 
+if [[ $HOME == "/home/jadamso" ]] ; then
+	SUDO=""
+## For Personal
+elif [[ $HOME == "/home/Jadamso" ]] ; then
+	SUDO=sudo
+fi
+
+
 #########################
 # GeoSpatial Programs
 #########################
@@ -21,7 +35,7 @@ tar -xzf netcdf-$vers.tar.gz && rm netcdf-$vers.tar.gz && cd netcdf-$vers
 	--enable-parallel \
 	--enable-remote-fortran-bootstrap
 make
-make install
+$SUDO make install
 
 ## GEOS:
 echo -e "$s00 GEOS $s1"
@@ -32,7 +46,7 @@ tar -xjf geos-$vers.tar.bz2 && rm geos-$vers.tar.bz2 && cd ~/geos-$vers
 	--prefix=$PREFIX \
 	--enable-python
 make
-make install
+$SUDO make install
 
 ## Proj4: http://stackoverflow.com/questions/33381421/how-to-upgrade-proj4-for-rgdal
 echo -e "$s00 Proj4 $s1"
@@ -48,7 +62,7 @@ cd ~/"proj-$vers"
 	--prefix=$PREFIX \
 	--enable-shared=yes
 make
-make install
+$SUDO make install
 
 
 echo -e "$s00 GDAL $s1"
@@ -80,7 +94,7 @@ unset CFLAGS
 
 ## on PC add --without-libtool --with-opencl --with-python and remove --prefix=$PREFIX
 make
-make install
+$SUDO make install
 
 gdal-config --version
 ogr2ogr --version
