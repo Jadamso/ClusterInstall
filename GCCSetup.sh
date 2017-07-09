@@ -5,6 +5,19 @@ source "$HOME/.bashrc"
 
 
 #########################
+# Sudo Setup 
+#########################
+
+## For Cluster 
+if [[ $HOME == "/home/jadamso" ]] ; then
+	SUDO=""
+## For Personal
+elif [[ $HOME == "/home/Jadamso" ]] ; then
+	SUDO=sudo
+fi
+
+
+#########################
 # GCC Install
 #########################
 
@@ -17,7 +30,7 @@ tar -xf gmp-$vers.tar.xz && rm gmp-$vers.tar.xz
 cd ~/gmp-$vers
 ./configure --prefix=$HOME
 make
-sudo make install 
+$SUDO make install 
 
 
 ## MPFR
@@ -28,7 +41,7 @@ tar -xf mpfr-$vers.tar.xz && rm mpfr-$vers.tar.xz
 cd ~/mpfr-$vers
 ./configure --prefix=$HOME
 make 
-sudo make install
+$SUDO make install
 
 
 ## MPC
@@ -39,10 +52,10 @@ tar -xzf mpc-$vers.tar.gz && rm mpc-$vers.tar.gz
 cd ~/mpc-$vers
 ./configure --prefix=$HOME
 make
-sudo make install
+$SUDO make install
 
 ## GCC prereq
-sudo yum install -y \
+$SUDO yum install -y \
 	zlib-devel.x86_64 \
 	gcc-go.x86_64
 
@@ -60,7 +73,7 @@ cd ~/gcc-$vers
     --with-system-zlib \
     --enable-languages=c,c++,fortran,go,objc,obj-c++
 make
-sudo make install
+$SUDO make install
 
 source $HOME/.bashrc
 

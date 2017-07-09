@@ -1,7 +1,7 @@
 # ClusterInstall
 Install instructions for my scientic programs on a computer cluster
 
-    cd $HOME/InstallSetup
+    cd $HOME/Install
     git clone https://github.com/Jadamso/ClusterInstall
 
 
@@ -15,7 +15,7 @@ Install instructions for my scientic programs on a computer cluster
 
 *git version 1.8 lacks support for https*
 
-    export IDIR="$HOME/InstallSetup/InstallInstructions/Cluster"
+    export IDIR="$HOME/Install/ClusterInstall"
     cd $IDIR
 
 
@@ -23,7 +23,7 @@ Install instructions for my scientic programs on a computer cluster
 
 make sure .bashrc, .bashrc_PC, .bashrc_CLUSTER are available in $HOME
 
-    PDIR=$HOME/InstallSetup/ClusterInstall/ProfileFiles
+    PDIR=$IDIR/ProfileFiles
     cd $PDIR
     cp $(ls -A $PDIR) $HOME
     cat $HOME/.bashrc_CLUSTER
@@ -40,6 +40,8 @@ append your $HOME/.bashrc with
 
 
 ## Math Setup for Local Machines
+
+    cd $IDIR
 
 *uses --prefix=$HOME*
 

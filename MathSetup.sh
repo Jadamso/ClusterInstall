@@ -4,12 +4,25 @@ shopt -s expand_aliases
 source "$HOME/.bashrc"
 
 
+#########################
+# Sudo Setup 
+#########################
+
+## For Cluster 
+if [[ $HOME == "/home/jadamso" ]] ; then
+	SUDO=""
+## For Personal
+elif [[ $HOME == "/home/Jadamso" ]] ; then
+	SUDO=sudo
+fi
+
+
 echo "currently uses git and yum"
 
 # FORTRAN, C, BLAS, LAPACK
-sudo yum -y install gmp gmp-devel mpfr mpfr-devel libmpc libmpc-devel
-sudo yum -y install cpp gcc gcc-c++ gcc-gfortran gcc-objc.x86_64
-sudo yum -y install blas-devel.x86_64 blas64.x86_64 openblas.x86_64 lapack.x86_64 lapack-devel
+$SUDO yum -y install gmp gmp-devel mpfr mpfr-devel libmpc libmpc-devel
+$SUDO yum -y install cpp gcc gcc-c++ gcc-gfortran gcc-objc.x86_64
+$SUDO yum -y install blas-devel.x86_64 blas64.x86_64 openblas.x86_64 lapack.x86_64 lapack-devel
 
 #########################
 # Parallel Programs
@@ -23,7 +36,7 @@ tar -xzf v$vers.tar.gz && rm v$vers.tar.gz
 #git clone https://github.com/xianyi/OpenBLAS.git
 cd ~/OpenBLAS-$vers
 make PREFIX=$HOME FC=gfortran TARGET=HASWELL
-sudo make PREFIX=$HOME install
+$SUDO make PREFIX=$HOME install
 
 ## Atlas
 cd ~ 
@@ -35,7 +48,7 @@ mkdir build
 cd  ~/ATLAS/build
 ../configure --prefix=$HOME
 make 
-sudo make install
+$SUDO make install
 #git clone https://github.com/math-atlas/math-atlas.git
 #cd ~/math-atlas
 #mkdir build 
@@ -71,7 +84,7 @@ cd ~/hwloc-$versa
 ./autogen.sh
 ./configure --prefix=$HOME
 make
-sudo make install
+$SUDO make install
 
 
 
@@ -99,20 +112,20 @@ yum install mpich mpich-devel mpich-autoload mpich-autoload
 cd && wget http://icl.eecs.utk.edu/projectsfiles/plasma/pubs/plasma-installer_2.8.0.tar.gz
 tar -xf "plasma-installer_2.8.0.tar.gz" && rm "plasma-installer_2.8.0.tar.gz" && cd ~/plasma-installer_2.8.0
 export OPENBLAS_NUM_THREADS=1
-sudo ./setup.py --prefix="$HOME" --blaslib="-L$HOME/lib -lopenblas" --cflags="-O3 -fPIC -I$HOME/include" --fflags="-O3 -fPIC" --noopt="-fPIC" --notesting --ldflags_c="-I$HOME/include" --downlapc --nbcores=3
+$SUDO ./setup.py --prefix="$HOME" --blaslib="-L$HOME/lib -lopenblas" --cflags="-O3 -fPIC -I$HOME/include" --fflags="-O3 -fPIC" --noopt="-fPIC" --notesting --ldflags_c="-I$HOME/include" --downlapc --nbcores=3
 cd $HOME/lib # Make shared libraries # 
-sudo gcc -shared -o libplasma.so -Wl,-whole-archive libplasma.a -Wl,-no-whole-archive -L. -lhwloc 
-sudo gcc -shared -o libcoreblas.so -Wl,-whole-archive libcoreblas.a -Wl,-no-whole-archive 
-sudo gcc -shared -o libquark.so -Wl,-whole-archive libquark.a -Wl,-no-whole-archive
+$SUDO gcc -shared -o libplasma.so -Wl,-whole-archive libplasma.a -Wl,-no-whole-archive -L. -lhwloc 
+$SUDO gcc -shared -o libcoreblas.so -Wl,-whole-archive libcoreblas.a -Wl,-no-whole-archive 
+$SUDO gcc -shared -o libquark.so -Wl,-whole-archive libquark.a -Wl,-no-whole-archive
 
 ##cd ~ && wget http://www.hiplar.org/downloads/HiPLARM.Installer
 ##./HiPALRM.Installer --prefix=$HOME/lib --with-openblas --no-gpu
 
 ## CUDA: gpu processing
 cd ~ && wget http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-repo-rhel7-7.5-18.x86_64.rpm
-sudo rpm -i cuda-repo-rhel7-7.5-18.x86_64.rpm
-sudo yum clean all
-sudo yum install cuda
+$SUDO rpm -i cuda-repo-rhel7-7.5-18.x86_64.rpm
+$SUDO yum clean all
+$SUDO yum install cuda
    export LD_LIBRARY_PATH=/usr/local/cuda/lib
    export PATH=$PATH:/usr/local/cuda/bin
 
@@ -121,7 +134,7 @@ Mvers=2.0.1
 cd ~ && wget http://icl.cs.utk.edu/projectsfiles/magma/downloads/magma-$Mvers.tar.gz
 tar -xf magma-$Mvers.tar.gz && rm magma-$Mvers.tar.gz && cd ~/magma-$Mvers
 cd ~/magma-$Mvers/src && wget http://www.hiplar.org/files/MAGMApatch.sh
-sudo bash ./MAGMApatch.sh ## http://www.hiplar.org/downloads/magmapatch.tar.gz
+$SUDO bash ./MAGMApatch.sh ## http://www.hiplar.org/downloads/magmapatch.tar.gz
 cd ~/magma-$Mvers && cp make.inc.goto make.inc
 gedit make.inc
  OPTS = -O3 -DADD_ -fPIC
