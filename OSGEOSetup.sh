@@ -41,7 +41,8 @@ $SUDO make install
 echo -e "$s00 GEOS $s1"
 vers=3.6.1
 cd ~ &&  wget http://download.osgeo.org/geos/geos-$vers.tar.bz2
-tar -xjf geos-$vers.tar.bz2 && rm geos-$vers.tar.bz2 && cd ~/geos-$vers
+tar -xjf geos-$vers.tar.bz2 && rm geos-$vers.tar.bz2
+cd ~/geos-$vers
 ./configure \
 	--prefix=$PREFIX \
 	--enable-python

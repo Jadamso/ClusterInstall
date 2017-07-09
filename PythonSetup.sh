@@ -4,6 +4,19 @@ shopt -s expand_aliases
 source "$HOME/.bashrc"
 
 #########################
+# Sudo Setup 
+#########################
+
+## For Cluster 
+if [[ $HOME == "/home/jadamso" ]] ; then
+	SUDO=""
+## For Personal
+elif [[ $HOME == "/home/Jadamso" ]] ; then
+	SUDO=sudo
+fi
+
+
+#########################
 # Python
 #########################
 
@@ -52,6 +65,25 @@ easy_install pip
 exit
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PYTHONPATH=
+
 #########################
 # Update
 #########################
@@ -65,6 +97,15 @@ sudo pip install -U pip
 
 
 pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo pip install --upgrade --force- -U
+
+
+exit
+
+
+
+
+
+
 
 
 

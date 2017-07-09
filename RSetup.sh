@@ -1,5 +1,5 @@
 #!/bin/bash
-# bash ~/InstallSetup/ClusterInstall/RSetup.sh
+# bash ~/Install/ClusterInstall/RSetup.sh
 
 shopt -s expand_aliases
 source "$HOME/.bashrc"

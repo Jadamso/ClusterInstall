@@ -1,7 +1,9 @@
 
 
 ## ADD Intel C and Fortran
-module add intel/16.0 
+module add intel/17.0
+module add boost/1.57.0
+
 export CC=icc 
 export CXX=icpc 
 export FC=ifort  

@@ -11,6 +11,7 @@ source "$HOME/.bashrc"
 ## For Cluster 
 if [[ $HOME == "/home/jadamso" ]] ; then
 	SUDO=""
+    module rm intel
 ## For Personal
 elif [[ $HOME == "/home/Jadamso" ]] ; then
 	SUDO=sudo
@@ -20,6 +21,8 @@ fi
 # GCC PreReqs
 #########################
 
+
+## https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz
 
 if [[ $@ =~ "-pr" ]] || [[ $@ =~ "--pre-reqs" ]]
 then
