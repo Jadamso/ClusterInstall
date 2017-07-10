@@ -1,8 +1,10 @@
 
 module add hdf5/1.10.0
 
+#module add cmake/3.6.1
 
-## ADD Intel C and Fortran
+## ADD  C and Fortran
+module add gcc/7.1.0
 module add intel/17.0
 module add boost/1.57.0
 
@@ -20,11 +22,11 @@ module add mpich2/1.4
 module add rclone/1.23
 
 
+
 ## Add GCC support
 #module add gcc/6.1.0
 #export PATH=$PATH:/software/gcc/6.1.0/bin
 #alias gcc=/software/gcc/6.1.0/bin/gcc
-
 
 
 
@@ -43,7 +45,7 @@ export PATH=$PATH:/Library/Frameworks/GDAL.framework/Programs
 
 
 ## Proj4
-export PROJ_LIB=$HOME/proj-4.9.2/nad ## installed with --prefix=$HOME
+export PROJ_LIB=$HOME/proj-4.9.3/nad ## installed with --prefix=$HOME
 #alias proj=~/proj-4.9.2/src/proj
 
 
