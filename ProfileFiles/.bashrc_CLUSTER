@@ -4,19 +4,18 @@ module add hdf5/1.10.0
 #module add cmake/3.6.1
 
 ## ADD  C and Fortran
-#module add gcc/7.1.0
-module add intel/17.0
+module add gcc/7.1.0
+#module add intel/17.0
 module add boost/1.57.0
 
+#export CC=icc 
+#export CXX=icpc 
+#export FC=ifort  
+#export F77=ifort 
 
-export CC=icc 
-export CXX=icpc 
-export FC=ifort  
-export F77=ifort 
 ## https://software.intel.com/en-us/node/528682
 ## 'icc -DMKL_ILP64 '
 ## 'ifort -i8 '
-
 
 module add mpich2/1.4 
 module add rclone/1.23
@@ -24,9 +23,9 @@ module add rclone/1.23
 
 
 ## Add GCC support
-#module add gcc/6.1.0
-#export PATH=$PATH:/software/gcc/6.1.0/bin
-#alias gcc=/software/gcc/6.1.0/bin/gcc
+#module add gcc/7.1.0
+export PATH=$PATH:$HOME/bin:/software/gcc/7.1.0/bin
+#alias gcc=/software/gcc/7.1.0/bin/gcc
 
 
 

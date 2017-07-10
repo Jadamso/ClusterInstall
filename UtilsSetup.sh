@@ -28,20 +28,36 @@ sudo make install
 #########################
 vers=4.4
 cd ~ && wget https://ftp.gnu.org/gnu/bash/bash-$vers.tar.gz
-tar -xzf bash-$vers.tar.gz && rm bash-$vers.tar.gz && cd ~/bash-$vers
-./configure --prefix=$HOME && make 
-sudo make install
+tar -xzf bash-$vers.tar.gz && rm bash-$vers.tar.gz
+cd ~/bash-$vers
+./configure --prefix=$HOME
+make 
+$SUDO make install
 
+
+#########################
+# gnutls
+#########################
+vers=3.5.9
+cd ~ 
+wget https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/gnutls-$vers.tar.xz
+tar xf gnutls-$vers.tar.xz && rm gnutls-$vers.tar.xz
+cd ~/gnutls-$vers
+./configure --prefix=$HOME
+make 
+$SUDO make install
 
 #########################
 # WGET
 #########################
+
 vers=1.19
 cd ~ && wget https://ftp.gnu.org/gnu/wget/wget-$vers.tar.xz
-tar -xf wget-$vers.tar.xz && rm wget-$vers.tar.xz && cd ~/wget-$vers
+tar -xf wget-$vers.tar.xz && rm wget-$vers.tar.xz
+cd ~/wget-$vers
 ./configure --prefix=$HOME
 make 
-sudo make install
+$SUDO make install
 
 
 #########################
@@ -67,7 +83,7 @@ tar xzvf curl-$vers.tar.gz && rm curl-$vers.tar.gz
 cd ~/curl-$vers
 ./configure --with-ssl --prefix=$HOME 
 make
-sudo make install
+$SUDO make install
 
 
 
@@ -88,7 +104,7 @@ tar xzvf cmake-$versa-rc2.tar.gz && rm cmake-$versa-rc2.tar.gz
 cd cmake-$versa-rc2
 ./configure --prefix=$HOME 
 gmake
-sudo make install
+$SUDO make install
 
 
 

@@ -107,7 +107,7 @@ vers=2.2.0
 wget "http://download.osgeo.org/gdal/$vers/gdal-$vers.tar.gz"
 tar -xzf gdal-$vers.tar.gz && rm gdal-$vers.tar.gz
 cd ~/gdal-$vers
-unset CFLAGS
+#unset CFLAGS
 ./configure \
 	--prefix=$PREFIX \
 	--with-pic \
@@ -123,6 +123,7 @@ unset CFLAGS
 	--with-expat \
 	--with-jav \
 	--with-netcdf \
+    --with-python \
 	CC=icc \
 	F77=ifort \
 	FC=ifort
