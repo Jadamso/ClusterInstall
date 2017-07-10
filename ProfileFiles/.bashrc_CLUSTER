@@ -1,42 +1,84 @@
 
-## Add Paths
-export PATH=$HOME/bin:$PATH
-export MANPATH=$MANPATH:$HOME/share/man
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/lib64:$HOME/lib
+module add hdf5/1.10.0
 
 
-## User specific aliases and functions
-export PATH=$PATH:~/Programs
-export PKG_CONFIG_PATH=$HOME/lib/pkgconfig:$PKG_CONFIG_PATH
+## ADD Intel C and Fortran
+module add intel/17.0
+module add boost/1.57.0
 
 
-## TMUX Improved X11 forwarding
-# If not in screen or tmux, update the DISPLAY cache.
-# If we are, update the value of DISPLAY to be that in the cache.
-function update-x11-forwarding
-{
-    if [ -z "$STY" -a -z "$TMUX" ]; then
-        echo $DISPLAY > ~/.display.txt
-    else
-        export DISPLAY=`cat ~/.display.txt`
-    fi
-}
-
-# This is run before every command.
-preexec() {
-    # Don't cause a preexec for PROMPT_COMMAND.
-    # Beware!  This fails if PROMPT_COMMAND is a string containing more than one command.
-    [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return 
-
-    update-x11-forwarding
-
-    # Debugging.
-    #echo DISPLAY = $DISPLAY, display.txt = `cat ~/.display.txt`, STY = $STY, TMUX = $TMUX  
-}
-trap 'preexec' DEBUG
+export CC=icc 
+export CXX=icpc 
+export FC=ifort  
+export F77=ifort 
+## https://software.intel.com/en-us/node/528682
+## 'icc -DMKL_ILP64 '
+## 'ifort -i8 '
 
 
-## List Files
-alias ll='ls -lthcr --color=always | awk '\''{print $5,$6,$7,$8,$9}'\'' | column -t'
-#alias ll='ls -l --color=auto'
-#stat -c "%y %s %n" *
+module add mpich2/1.4 
+module add rclone/1.23
+
+
+## Add GCC support
+#module add gcc/6.1.0
+#export PATH=$PATH:/software/gcc/6.1.0/bin
+#alias gcc=/software/gcc/6.1.0/bin/gcc
+
+
+
+
+## Parallel
+export MAKEFLAGS="-j $(grep -c ^processor /proc/cpuinfo)"
+alias parallel='~/bin/parallel'
+
+
+
+
+
+## GDAL
+export LD_LIBRARY_PATH=$HOME/lib:$LD_LIBRARY_PATH ## installed with --prefix=$HOME
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/lib ## for default install
+export PATH=$PATH:/Library/Frameworks/GDAL.framework/Programs
+
+
+## Proj4
+export PROJ_LIB=$HOME/proj-4.9.2/nad ## installed with --prefix=$HOME
+#alias proj=~/proj-4.9.2/src/proj
+
+
+## R
+alias Rscript='$HOME/bin/Rscript';
+alias R='$HOME/bin/R --no-save';
+alias Ropen='$HOME/microsoft-r-open-MRO-3.3.1/source/bin/R --no-save';
+export LD_LIBRARY_PATH=$HOME/lib64:$LD_LIBRARY_PATH
+#R_LIBS_USER=$HOME/R/x86_64-unknown-linux-gnu-library/3.3
+
+
+
+
+
+## TexLive
+export PATH=$PATH:$HOME/.local/bin:/usr/local/texlive/2016/bin/x86_64-linux
+
+## Java
+export JAVA_HOME=~/jdk1.8.0_65
+export PATH=$PATH:$JAVA_HOME:$JAVA_HOME/bin
+#export CLASSPATH=.:/usr/lib/R/site-library/rJava/jri/
+
+
+
+
+
+
+
+## Cluster Commands
+export LIBRARY_PATH=$HOME/lib64:$HOME/lib:$LIBRARY_PATH
+alias interactive='qsub -I -X -l select=1:ncpus=8:mpiprocs=8:mem=20gb,walltime=40:00:00' 
+alias small='qsub -I -l select=1:ncpus=24:mpiprocs=24:mem=100gb,walltime=2:00:00'
+alias big='qsub -I -l select=1:ncpus=24:mpiprocs=24:mem=100gb,walltime=40:00:00'
+alias bigmem='qsub -I -q bigmem -l select=1:ncpus=24:mpiprocs=24:mem=500gb,walltime=72:00:00'
+
+
+
+## check how busy cluster is: pbstop; max walltime-72:00:00
