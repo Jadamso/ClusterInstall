@@ -1,8 +1,12 @@
 #!/bin/bash
+# PREFIX=$HOME
 # bash ~/Install/ClusterInstall/RSetup.sh
 
 shopt -s expand_aliases
 source "$HOME/.bashrc"
+
+#module rm intel/17.0
+#module add gcc/7.1.0
 
 
 #########################
@@ -26,7 +30,7 @@ fi
 cd ~
 wget https://cran.r-project.org/src/base/R-latest.tar.gz
 Rvers=$(tar -tzvf R-latest.tar.gz | head -1 | awk '{print $NF}')
-tar -xzf R-latest.tar.gz && rm R-latest.tar.gz
+tar -xzf R-latest.tar.gz && rm "R-latest.tar.gz"
 cd $Rvers
 
 
@@ -54,7 +58,7 @@ export PKG_CXXFLAGS="-I$PREFIX/include:$PREFIX" #-DARMA_64BIT_WORD
 
 #export _JAVA_OPTIONS=-Xms and -Xmx 
 
-if [[ "$HOME " == "/home/jadamso" ]]  
+if [[ "$HOME" == "/home/jadamso" ]]  
 ## On Palmetto Cluster
 then
 

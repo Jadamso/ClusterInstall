@@ -39,7 +39,7 @@ tar -xf Python-$vers.tar.xz && rm Python-$vers.tar.xz
 cd ~/Python-$vers
 ./configure --prefix=$HOME --enable-optimizations
 make
-sudo make install
+$SUDO make install
 
 #sudo python ./setup.py uninstall
 
@@ -48,7 +48,7 @@ sudo make install
 #########################
 cd ~/Python-$vers
 wget --no-check-certificate https://bootstrap.pypa.io/ez_setup.py
-python ez_setup.py --insecure
+./python -d $HOME  ez_setup.py --insecure 
 
 #########################
 # Pip
@@ -56,7 +56,7 @@ python ez_setup.py --insecure
 
 cd ~/Python-$vers
 wget https://bootstrap.pypa.io/get-pip.py
-sudo python get-pip.pyh
+$SUDO python get-pip.pyh
 easy_install pip
 
 #rm easy_install-3.6 pip3.6 pip3 python3.6m python3.6 python3.6m-config

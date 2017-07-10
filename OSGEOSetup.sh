@@ -1,4 +1,6 @@
 #!/bin/bash
+# PREFIX=$HOME
+# d
 
 shopt -s expand_aliases
 source "$HOME/.bashrc"
@@ -22,6 +24,10 @@ fi
 #########################
 # Pre-requisites to use R as a GIS
 ## old but works: Proj4 vers=4.7.0, GDAL vers=2.0.2 
+
+wget https://www.hdfgroup.org/package/bzip2/?wpdmdl=4300 -O HDF5.tar.bzip2
+tar xvfj HDF5.tar.bzip2
+cd hdf5 
 
 echo "https://github.com/OSGeo"
 echo "http://elgis.argeo.org/"
