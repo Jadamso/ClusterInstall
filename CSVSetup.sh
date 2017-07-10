@@ -36,7 +36,3 @@ sudo pip install csvkit
 #cd ~ && wget http://download.documentfoundation.org/libreoffice/src/4.4.5/libreoffice-$vers.tar.xz
 #tar -xzf libreoffice-$vers.tar.xz && rm libreoffice-$vers.tar.xz && cd libreoffice-$vers
 #./configure --prefix=$HOME --disable-cups --disable-gconf --disable-dbus --disable-gstreamer-1.0 --without-doxygen 
-
-# HDF5
-#https://support.hdfgroup.org/HDF5/release/obtainsrc5110.html#conf
-

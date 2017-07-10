@@ -45,13 +45,11 @@ append your $HOME/.bashrc with
 
 *uses --prefix=$HOME*
 
-    bash GCCSetup.sh *is still Problematic*
-    bash MathSetup.sh *OpenBLAS, ATLAS has problems* *hwloc works*
-    bash PythonSetup.sh *creates problems*
 
+    bash GCCSetup.sh *still buggy*
 *GCC does not work on SL7.1 or SL7.3*
 *gccgo: error: ../x86_64-pc-linux-gnu/libgo/zstdpkglist.go:    No such file or directory*
-
+    bash PythonSetup.sh *creates problems*
 
 ## Cluster Setup
 
@@ -60,15 +58,17 @@ append your $HOME/.bashrc with
     export PREFIX=$HOME
 
     bash ClusterSetup1.sh
-        #bash UtilsSetup.sh *works*
-        #bash SyncSetup.sh *works*
-        #bash TMUXSetup.sh *works*
+        #bash UtilsSetup.sh
+        #bash SyncSetup.sh
+        #bash TMUXSetup.sh
 
 #### Does not work yet: bash ClusterSetup2.sh
     bash ClusterSetup2.sh
-        bash CompressSetup.sh *works*
-        bash OSGEOSetup.sh *NetCDF, GEOS, GDAL does not work*
-        bash RSetup.sh *does not work*
+        bash CompressSetup.sh
+        bash MathSetup.sh
+        bash OpenJavaDevKitSetup.sh
+        bash OSGEOSetup.sh *GDAL does not work*
+        bash RSetup.sh
 
 
 #### Some Other Desireable Software Pseudo Guides
@@ -77,7 +77,7 @@ append your $HOME/.bashrc with
     bash GitHubSetup.sh
     bash SSHSetup.sh
     bash StorageSetup.sh
-        # Set up AWS to screen for pass info
+        # Set up AWS to screen for password info
         # https://github.com/awslabs/git-secrets
     bash CSVSetup.sh
 

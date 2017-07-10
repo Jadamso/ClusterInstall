@@ -19,18 +19,13 @@ fi
 
 echo "currently uses git and yum"
 
-# FORTRAN, C, BLAS, LAPACK
-$SUDO yum -y install gmp gmp-devel mpfr mpfr-devel libmpc libmpc-devel
-$SUDO yum -y install cpp gcc gcc-c++ gcc-gfortran gcc-objc.x86_64
-$SUDO yum -y install blas-devel.x86_64 blas64.x86_64 openblas.x86_64 lapack.x86_64 lapack-devel
-
 #########################
 # Parallel Programs
 #########################
 
 ## OpenBLAS
 cd ~
-vers=0.2.14
+vers=0.2.19
 wget http://github.com/xianyi/OpenBLAS/archive/v$vers.tar.gz
 tar -xzf v$vers.tar.gz && rm v$vers.tar.gz 
 #git clone https://github.com/xianyi/OpenBLAS.git
@@ -40,13 +35,14 @@ $SUDO make PREFIX=$HOME install
 
 ## Atlas
 cd ~ 
-vers=3.10.3
-wget https://sourceforge.net/projects/math-atlas/files/Stable/$vers/atlas$vers.tar.bz2
-tar -xvjf atlas$vers.tar.bz2 && rm atlas$vers.tar.bz2
-cd ~/ATLAS
-mkdir build
-cd  ~/ATLAS/build
-../configure --prefix=$HOME
+vers="3.11.38" #3.10.3
+wget https://github.com/math-atlas/math-atlas/archive/v$vers.tar.gz
+
+#https://sourceforge.net/projects/math-atlas/files/Stable/$vers/atlas$vers.tar.bz2
+tar -xzf v$vers.tar.gz && rm v$vers.tar.gz
+cd ~/math-atlas-$vers
+make srcdir=build
+cd  ~/math-atlas-$vers/build
 make 
 $SUDO make install
 #git clone https://github.com/math-atlas/math-atlas.git

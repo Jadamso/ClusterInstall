@@ -34,7 +34,7 @@ export MAKEFLAGS="-j $(grep -c ^processor /proc/cpuinfo)"
 alias parallel='~/bin/parallel'
 
 
-
+module add netcdf/4.4.0
 
 
 ## GDAL
@@ -63,7 +63,7 @@ export LD_LIBRARY_PATH=$HOME/lib64:$LD_LIBRARY_PATH
 export PATH=$PATH:$HOME/.local/bin:/usr/local/texlive/2016/bin/x86_64-linux
 
 ## Java
-export JAVA_HOME=~/jdk1.8.0_65
+export JAVA_HOME=~/jdk1.8.0_131
 export PATH=$PATH:$JAVA_HOME:$JAVA_HOME/bin
 #export CLASSPATH=.:/usr/lib/R/site-library/rJava/jri/
 

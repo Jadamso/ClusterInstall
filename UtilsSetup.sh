@@ -11,13 +11,13 @@ source "$HOME/.bashrc"
 echo -e "$s0 GNU parallel... $s1"
 
 cd ~
-vers=20170522
+vers=20170622
 wget http://ftpmirror.gnu.org/parallel/parallel-$vers.tar.bz2
 tar xvfj parallel-$vers.tar.bz2  && rm parallel-$vers.tar.bz2
 cd parallel-$vers
 ./configure --prefix=$HOME
 make
-sudo make install
+$SUDO make install
 
 #sudo $(wget -O - pi.dk/3 || curl pi.dk/3/ || fetch -o - http://pi.dk/3) | bash
 #cp $(which parallel) $PREFIX/bin/parallel
@@ -30,31 +30,6 @@ vers=4.4
 cd ~ && wget https://ftp.gnu.org/gnu/bash/bash-$vers.tar.gz
 tar -xzf bash-$vers.tar.gz && rm bash-$vers.tar.gz
 cd ~/bash-$vers
-./configure --prefix=$HOME
-make 
-$SUDO make install
-
-
-#########################
-# gnutls
-#########################
-vers=3.5.9
-cd ~ 
-wget https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/gnutls-$vers.tar.xz
-tar xf gnutls-$vers.tar.xz && rm gnutls-$vers.tar.xz
-cd ~/gnutls-$vers
-./configure --prefix=$HOME
-make 
-$SUDO make install
-
-#########################
-# WGET
-#########################
-
-vers=1.19
-cd ~ && wget https://ftp.gnu.org/gnu/wget/wget-$vers.tar.xz
-tar -xf wget-$vers.tar.xz && rm wget-$vers.tar.xz
-cd ~/wget-$vers
 ./configure --prefix=$HOME
 make 
 $SUDO make install
@@ -86,6 +61,37 @@ make
 $SUDO make install
 
 
+exit
+
+
+
+#########################
+# gnutls
+#########################
+#vers=3.5.9
+#cd ~ 
+#wget https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/gnutls-#$vers.tar.xz
+#tar xf gnutls-$vers.tar.xz && rm gnutls-$vers.tar.xz
+#cd ~/gnutls-$vers
+#./configure --prefix=$HOME
+#make 
+#$SUDO make install
+
+
+#########################
+# WGET
+#########################
+
+vers=1.19
+cd ~ && wget https://ftp.gnu.org/gnu/wget/wget-$vers.tar.xz
+tar -xf wget-$vers.tar.xz && rm wget-$vers.tar.xz
+cd ~/wget-$vers
+./configure \
+    --prefix=$HOME \
+    --without-gnutils
+make 
+$SUDO make install
+#wants LIBPSL GNUTLS
 
 #########################
 # MAKE 

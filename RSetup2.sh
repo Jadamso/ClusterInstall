@@ -5,8 +5,8 @@
 shopt -s expand_aliases
 source "$HOME/.bashrc"
 
-module rm intel/17.0
-module add gcc/7.1.0
+#module rm intel/17.0
+#module add gcc/7.1.0
 
 
 #########################
@@ -40,24 +40,22 @@ cd $Rvers
 ## Configure 
 
 #PREFIX=$HOME
-
+export JAVA_HOME=~/jdk1.8.0_131
 
 ## Setup Install
-export PATH=$PREFIX/bin:$PATH
 
-
-export LDFLAGS="-L$PREFIX/lib"
-export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
-
-export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig 
+#export PATH=$PREFIX/bin:$PATH
+#export LDFLAGS="-L$PREFIX/lib"
+#export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
+#export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig 
 
 #http://126kr.com/article/phm94bo1m
 #https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Shared-BLAS
 
-    export CC=gcc #'icc -DMKL_ILP64 '
-    export CXX=gcc
-export FC=gfortran  
-export F77=gfortran 
+#    export CC=gcc #'icc -DMKL_ILP64 '
+#    export CXX=gcc
+#export FC=gfortran  
+#export F77=gfortran 
 
 ./configure \
     --prefix=$PREFIX \
@@ -69,7 +67,10 @@ export F77=gfortran
     --enable-memory-profiling \
     --with-lapack \
     --with-blas \
-    --enable-byte-compiled-packages
+    --enable-byte-compiled-packages \
+    --without-x
+
+# jni.h
 
 
     #--without-recommended-packages
@@ -85,27 +86,16 @@ make
 $SUDO make install 
 
 ## Rprofile
-cp ~/Rprofile.site ~/lib64/R/etc/Rprofile.site ## Cluster without revolution
-#chmod -R a+w ~/lib64/R/library
+cp ~/Rprofile.site ~/lib64/R/etc/Rprofile.site
 
-unset CFLAGS
 
+## Java
+R CMD javareconf
 
 ## Update Packages
 # ~/Desktop/Common/R_Code/LIBS.R 
 
 exit
-
-
-
-## Can Optimize a personal code -- i.e. pow_wrp.c
-#if [[ "$HOME " == "\home\jadamso" ]]  
-#then
-#    ipath=/software/intel/compilers_and_libraries_2016.2.181/linux/bin/intel64
-#    export LD_LIBRARY_PATH=$ipath/:./lib:./:$LD_LIBRARY_PATH
-#    icc -O2 -fPIC -I/R-$Rvers/include -c pow_wrp.c -o pow_wrp.o
-#    icc -shared -liomp5 -L$ipath-lmkl_rt -o pow_wrp.so pow_wrp.o -L./lib -lR
-#fi
 
 
 exit

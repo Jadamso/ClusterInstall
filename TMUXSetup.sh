@@ -3,24 +3,28 @@
 shopt -s expand_aliases
 source "$HOME/.bashrc"
 
+#PREFIX=$HOME
 
 #########################
-# Terminal Multiplexer
+# LIBEVENT
 #########################
 
-PREFIX=$HOME
-
-## LIBEVENT
-vers=2.1.8 #2.0.22
+vers=2.0.22 #2.1.8
 cd ~
 wget "https://github.com/libevent/libevent/releases/download/release-$vers-stable/libevent-$vers-stable.tar.gz"
-# "https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/libevent-2.0.22-stable.tar.gz"
-tar -xzf libevent-$vers-stable.tar.gz && rm libevent-$vers-stable.tar.gz && cd ~/libevent-$vers-stable
-./configure --prefix=$PREFIX --disable-static # --disable-shared
+tar -xzf libevent-$vers-stable.tar.gz && rm libevent-$vers-stable.tar.gz
+cd ~/libevent-$vers-stable
+./configure \
+    --prefix=$PREFIX \
+    --disable-static
 make
-sudo make install
+$SUDO make install
 
-## ncurses
+#########################
+# ncurses
+#########################
+
+
 vers=6.0 #5.9
 cd ~
 wget "ftp://ftp.gnu.org/gnu/ncurses/ncurses-$vers.tar.gz"
@@ -28,10 +32,11 @@ tar xvzf ncurses-$vers.tar.gz && rm ncurses-$vers.tar.gz
 cd ~/ncurses-$vers
 ./configure --prefix=$PREFIX
 make
-sudo make install
+$SUDO make install
 
-# sudo yum install -y cmake.x86_64
-# TMUX
+#########################
+# TMUX: Terminal Multiplexer
+#########################
 vers=2.5 #2.0 
 cd ~
 wget "https://github.com/tmux/tmux/releases/download/$vers/tmux-$vers.tar.gz"
@@ -42,13 +47,17 @@ cd ~/tmux-$vers
 	LDFLAGS="-static -L$PREFIX/lib -L$PREFIX/include/ncurses -L$PREFIX/include"\
 	CPPFLAGS="-I$PREFIX/include -I$PREFIX/include/ncurses"
 make
-sudo cp tmux $PREFIX/bin
+$SUDO cp tmux $PREFIX/bin
 
 
 
-## Tmux Status
-cd ~ && wget https://github.com/thewtex/tmux-mem-cpu-load/archive/master.zip
-unzip master.zip && rm master.zip && cd ~/tmux-mem-cpu-load-master
+
+#########################
+# TMUX Status Bar
+#########################
+cd ~ 
+git clone https://github.com/thewtex/tmux-mem-cpu-load.git
+cd ~/tmux-mem-cpu-load
 cmake .
 make
 

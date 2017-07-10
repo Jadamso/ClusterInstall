@@ -14,8 +14,9 @@ tar xzvf rsync-$vers.tar.gz && rm rsync-$vers.tar.gz
 cd rsync-$vers
 ./configure --prefix=$HOME 
 make
-sudo make install
+$SUDO make install
 
+exit 
 
 #########################
 # Rclone 
@@ -33,13 +34,13 @@ curl -O https://downloads.rclone.org/rclone-$vers-linux-amd64.zip
 unzip rclone-$vers-linux-amd64.zip && rm rclone-$vers-linux-amd64.zip
 cd rclone-$vers-linux-amd64
 
-sudo cp rclone /usr/sbin/
-sudo chown root:root /usr/sbin/rclone
-sudo chmod 755 /usr/sbin/rclone
+$SUDO cp rclone /usr/sbin/
+$SUDO chown root:root /usr/sbin/rclone
+$SUDO chmod 755 /usr/sbin/rclone
 
-sudo mkdir -p /usr/local/share/man/man1
-sudo cp rclone.1 /usr/local/share/man/man1/
-sudo mandb
+$SUDO mkdir -p /usr/local/share/man/man1
+$SUDO cp rclone.1 /usr/local/share/man/man1/
+$SUDO mandb
 
 rclone config 
 #new remote

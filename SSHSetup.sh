@@ -10,8 +10,9 @@ source "$HOME/.bashrc"
 cd ~
 git clone https://github.com/openssl/openssl.git
 cd openssl
-./config --prefix=$HOME && make
-sudo make install
+./config --prefix=$HOME
+make
+$SUDO make install
 
 #########################
 # OpenSSH
@@ -24,7 +25,7 @@ wget http://mirror.jmu.edu/pub/OpenBSD/OpenSSH/portable/openssh-$vers.tar.gz
 tar -xzf  openssh-$vers.tar.gz && rm openssh-$vers.tar.gz
 cd ~/openssh-$vers
 ./configure --prefix=$HOME && make 
-sudo make install
+$SUDO make install
 echo $(ssh -V)
 
 

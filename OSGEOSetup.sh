@@ -30,35 +30,6 @@ echo "http://elgis.argeo.org/"
 
 
 #########################
-# HDF5
-#########################
-
-#wget https://www.hdfgroup.org/package/bzip2/?wpdmdl=4300 -O HDF5.tar.bzip2
-#tar xvfj HDF5.tar.bzip2 && rm HDF5.tar.bzip2
-#cd hdf5 
-
-
-#########################
-# NetCDF
-#########################
-# https://www.unidata.ucar.edu/software/netcdf/docs/build_parallel.html
-
-echo -e "$s00 NetCDF $s1"
-vers=4.4.1
-cd ~ && wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-$vers.tar.gz
-tar -xzf netcdf-$vers.tar.gz && rm netcdf-$vers.tar.gz 
-cd netcdf-$vers
-./configure \
-	--prefix=$PREFIX \
-	--enable-parallel \
-    --disable-shared \
-    --enable-parallel-tests  \
-	--enable-remote-fortran-bootstrap
-make
-$SUDO make install
-
-
-#########################
 # GEOS
 #########################
 
@@ -67,11 +38,9 @@ vers=3.6.1
 cd ~ &&  wget http://download.osgeo.org/geos/geos-$vers.tar.bz2
 tar -xjf geos-$vers.tar.bz2 && rm geos-$vers.tar.bz2
 cd ~/geos-$vers
-
-CXXFLAGS=-std=c++11
 ./configure \
-	--prefix=$PREFIX \
-	--enable-python
+	--prefix=$PREFIX
+	#--enable-python
 make
 $SUDO make install
 
@@ -103,7 +72,7 @@ $SUDO make install
 
 echo -e "$s00 GDAL $s1"
 cd ~
-vers=2.2.0
+vers=2.2.1
 wget "http://download.osgeo.org/gdal/$vers/gdal-$vers.tar.gz"
 tar -xzf gdal-$vers.tar.gz && rm gdal-$vers.tar.gz
 cd ~/gdal-$vers
@@ -121,13 +90,15 @@ cd ~/gdal-$vers
 	--with-jpeg \
 	--with-png \
 	--with-expat \
-	--with-jav \
+	--with-java=$JAVA_HOME \
 	--with-netcdf \
     --with-python \
-	CC=icc \
-	F77=ifort \
-	FC=ifort
-# GDAL:
+    --with-unix-stdio-64=yes \
+    --with-hdf5=no 
+#	CC=icc \
+#	F77=ifort \#
+#	FC=ifort
+
 
 ## on PC add --without-libtool --with-opencl --with-python and remove --prefix=$PREFIX
 make
@@ -137,7 +108,33 @@ gdal-config --version
 ogr2ogr --version
 gdal-config --cflags
 
+exit
 
-module add netcdf/4.4.0
-geos/3.5.0
-gdal/1.11.1
+
+#########################
+# HDF5
+#########################
+
+#wget https://www.hdfgroup.org/package/bzip2/?wpdmdl=4300 -O HDF5.tar.bzip2
+#tar xvfj HDF5.tar.bzip2 && rm HDF5.tar.bzip2
+#cd hdf5 
+
+
+#########################
+# NetCDF
+#########################
+# https://www.unidata.ucar.edu/software/netcdf/docs/build_parallel.html
+
+echo -e "$s00 NetCDF $s1"
+vers=4.4.1
+cd ~ && wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-$vers.tar.gz
+tar -xzf netcdf-$vers.tar.gz && rm netcdf-$vers.tar.gz 
+cd netcdf-$vers
+./configure \
+	--prefix=$PREFIX \
+	--enable-parallel \
+    --disable-shared \
+    --enable-parallel-tests  \
+	--enable-remote-fortran-bootstrap
+make
+$SUDO make install

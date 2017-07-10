@@ -18,7 +18,7 @@ tar -xzf zlib-$vers.tar.gz && rm zlib-$vers.tar.gz
 cd $HOME/zlib-$vers
 ./configure --prefix=$PREFIX
 make
-sudo make install
+$SUDO make install
 #https://github.com/madler/zlib.git
 
 ## bzip2
@@ -33,14 +33,14 @@ sudo make install
 
 ## xz
 echo -e "$s00 xz $s1"
-vers=5.2.3 #5.2.3
+vers=5.2.3
 cd ~
 wget "http://tukaani.org/xz/xz-$vers.tar.gz"
 tar xzvf xz-$vers.tar.gz && rm xz-$vers.tar.gz
 cd ~/xz-$vers
 ./configure --prefix=$PREFIX 
 make
-sudo make install
+$SUDO make install
 
 ## pcre: pcre-8.40 available, I am trying the newer pcre2
 echo -e "$s00 pcre $s1"
@@ -56,6 +56,6 @@ cd ~/pcre2-$vers
 	--enable-unicode-properties \
 	--enable-jit
 make
-sudo make install
+$SUDO make install
 #git clone https://git.tukaani.org/xz.git
 

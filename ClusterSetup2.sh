@@ -25,13 +25,6 @@ export MAKEFLAGS="-j $(grep -c ^processor /proc/cpuinfo)"
 
 
 #########################
-# GeoSpatial Programs
-#########################
-echo -e "$s0 GeoSpatial Programs... $s1"
-bash $IDIR/OSGEOSetup.sh
-
-
-#########################
 # Compression
 #########################
 echo -e "$s0 R Prerequisites... $s1"
@@ -39,17 +32,33 @@ bash $IDIR/CompressSetup.sh
 
 
 #########################
+# Math
+#########################
+echo -e "$s0 Math Prerequisites... $s1"
+bash $IDIR/MathSetup.sh
+
+
+#########################
+# Java
+#########################
+echo -e "$s0 Java Prerequisites... $s1"
+bash $IDIR/OpenJavaDevKitSetup.sh
+
+
+
+#########################
+# GeoSpatial Programs
+#########################
+echo -e "$s0 GeoSpatial Programs... $s1"
+bash $IDIR/OSGEOSetup.sh
+
+
+
+#########################
 # R
 #########################
 echo -e "$s0 R ... $s1" #with MKLR
-bash $IDIR/RSetup.sh
-
-## Temporary fix on Cluster
-#module add anaconda3/2.5.0
-#/software/anaconda3/2.5.0/envs/R/bin/R
-
-
-
+bash $IDIR/RSetup2.sh
 
 
 

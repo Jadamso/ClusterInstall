@@ -24,10 +24,17 @@ export MAKEFLAGS="-j $(grep -c ^processor /proc/cpuinfo)"
 
 
 #########################
-# Bash, Wget, openSSH
+# Bash, RCurl
 #########################
-echo -e "$s0 Bash, Wget, openSSH ... $s1"
+echo -e "$s0 Bash, Wget ... $s1"
 bash $IDIR/UtilsSetup.sh
+
+#########################
+# openSSH
+#########################
+echo -e "$s0 openSSH ... $s1"
+bash $IDIR/SSHSetup.sh
+
 
 
 #########################
