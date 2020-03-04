@@ -49,14 +49,14 @@ ssh -i LightsailDefaultKey.pem ubuntu@XXX.XXX.XXX.XXX
 ### Add aditional users
 new user generates key-pair
 upload to server (manually copy to computer with authorization, then scp to server)
-```
+```bash
 ## scp public ec2-user@XX.XXX.XXX.XX:~/.ssh
 scp public ubuntu@XX.XXX.XXX.XX:~/.ssh
 ```
 
 
 configure the server
-```
+```bash
 cat public >> authorized_keys ## add the new key
 chmod 755 authorized_keys ## modify authorization
 sudo cp authorized_keys /root/.ssh/authorized_keys
@@ -312,7 +312,7 @@ cd aws-scripts-mon
 ```
 
 To post server metric every 5 minutes, manually append the crontab file `crontab -e` with
-```
+```bash
 ## Post Server Metrics Every 5 Minutes
  */5 * * * * ~/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron 
 ```
@@ -333,7 +333,7 @@ sudo apt-get install -y \
 ```
 
 Declare Python3
-```
+```bash
 sudo update-alternatives  --set python3  /usr/bin/python3.7
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
 sudo update-alternatives --config python3
@@ -389,16 +389,17 @@ sudo service postgresql restart
 
 ## Install O-Tree
 
-```
+```bash
 pip3 install -U otree
 ```
 
 *For specific details, see* https://otree.readthedocs.io/en/latest/server/ubuntu.html
 
-
+```bash
+echo  PATH="$PATH:$HOME/.local/bin" >> ~/.bashrc
 echo 'alias python=python3.7' >> ~/.bashrc
 echo 'alias pip=pip3' >> ~/.bashrc
-
+```
 
 
 <!-- Setup for Cent-OS
