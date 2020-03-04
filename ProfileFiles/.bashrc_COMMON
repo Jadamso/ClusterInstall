@@ -1,0 +1,50 @@
+## Add Paths
+export PATH=$HOME/bin:$PATH
+export MANPATH=$MANPATH:$HOME/share/man
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/lib64:$HOME/lib
+
+
+## User specific aliases and functions
+export PATH=$PATH:~/Programs
+export PKG_CONFIG_PATH=$HOME/lib/pkgconfig:$PKG_CONFIG_PATH
+
+
+## TMUX Improved X11 forwarding
+# If not in screen or tmux, update the DISPLAY cache.
+# If we are, update the value of DISPLAY to be that in the cache.
+function update-x11-forwarding
+{
+    if [ -z "$STY" -a -z "$TMUX" ]; then
+        echo $DISPLAY > ~/.display.txt
+    else
+        export DISPLAY=`cat ~/.display.txt`
+    fi
+}
+
+# This is run before every command.
+preexec() {
+    # Don't cause a preexec for PROMPT_COMMAND.
+    # Beware!  This fails if PROMPT_COMMAND is a string containing more than one command.
+    [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return 
+
+    update-x11-forwarding
+
+    # Debugging.
+    #echo DISPLAY = $DISPLAY, display.txt = `cat ~/.display.txt`, STY = $STY, TMUX = $TMUX  
+}
+trap 'preexec' DEBUG
+
+
+## List Files
+alias ll='ls -xgthcr --color=always '
+#alias ll='ls -lthcr --color=always | awk '\''{print $5,$6,$7,$8,$9}'\'' | column -t'
+#alias ll='ls -l --color=auto'
+#stat -c "%y %s %n" *
+
+
+
+
+## Custom Paths
+#DESK=$HOME/Desktop
+#PROG=$HOME/Programs
+#TEACH=$HOME/Desktop/Teaching

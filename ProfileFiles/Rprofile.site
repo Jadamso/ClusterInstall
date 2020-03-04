@@ -1,0 +1,140 @@
+#### Jordan Adamson ####
+Jordan <- paste0("Jordan Adamson, ", Sys.Date() )
+DAY    <- format( Sys.time(), "%Y-%m-%d")
+
+# on PC w/ source build
+# sudo cp ~/Rprofile.site ~/lib64/R/etc/Rprofile.site 
+
+# on PC w/ yum build
+# sudo cp ~/Rprofile.site /usr/lib64/R/etc/Rprofile.site 
+
+#---------------------------------------------------------------
+##################
+# Library Information
+##################
+
+## Make sure:
+# mkdir -p ~/lib64/R/library
+# sudo chmod -R a+w ~/lib64/R/ ~/lib64/R/library
+# sudo chown -R Jadamso2: ~/lib64/R/
+
+## Library
+#.libPaths("~/lib64/R/library")
+.libPaths("~/R-Libs")
+
+#---------------------------------------------------------------
+##################
+# Options
+##################
+
+exit <- function() { q("no") }
+
+## Options
+options(download.file.method = "wget")
+options(stringsAsFactors = FALSE)
+options(repos = c(CRAN="https://cloud.r-project.org/") )
+#setRepositories(ind = c(1:9))
+
+options(menu.graphics = FALSE)
+
+options("Ncpus" = as.numeric(system("nproc", intern=TRUE)) ) 
+
+#---------------------------------------------------------------
+##################
+# Compiling
+##################
+
+library( compiler ) #R_COMPILE_PKGS=TRUE # R_ENABLE_JIT=3
+invisible( compilePKGS( "TRUE" ) )
+#invisible( enableJIT(2) ) 
+
+# message("USE LAPACK")
+## USE LAPACK
+#qr.default1 <- function (x, tol = 1e-07, LAPACK=T, ...) {
+#    x <- as.matrix(x)
+#    if (is.complex(x)) 
+#        return(structure(.Internal(La_qr_cmplx(x)), class = "qr"))
+#    if (LAPACK) 
+#        return(structure(.Internal(La_qr(x)), useLAPACK = TRUE, 
+#            class = "qr"))
+#    p <- as.integer(ncol(x))
+#    if (is.na(p)) 
+#        stop("invalid ncol(x)")
+#    n <- as.integer(nrow(x))
+#    if (is.na(n)) 
+#        stop("invalid nrow(x)")
+#    if (1 * n * p > 2147483647) 
+#        stop("too large a matrix for LINPACK")
+#    storage.mode(x) <- "double"
+#    res <- .Fortran(.F_dqrdc2, qr = x, n, n, p, as.double(tol), 
+#        rank = integer(1L), qraux = double(p), pivot = as.integer(seq_len(p)), 
+#        double(2L * p))[c(1, 6, 7, 8)]
+#    if (!is.null(cn <- colnames(x))) 
+#        colnames(res$qr) <- cn[res$pivot]
+#    class(res) <- "qr"
+#    res
+#}
+#utils::assignInNamespace("qr.default", qr.default1, "base")
+
+
+#---------------------------------------------------------------
+##################
+# Greetings and Colors
+##################
+
+quiet  <- any(match(c("-q", "--silent", "--quiet", "--slave"), commandArgs()), na.rm=TRUE)
+
+if (!quiet){
+
+    ## Color Output
+    if( Sys.getenv("TERM") %in% c("xterm-256color", "screen-256color") ){
+        library("colorout")
+        invisible(setOutputColors256(verbose=F))
+    }
+
+    ## Formatting
+    try( wideScreen <- function( 
+        howWide=Sys.getenv("COLUMNS"),
+        howTall=Sys.getenv("LINES"),
+        tt=F) {
+            if(tt){
+                Wide <- as.integer(howTall)*2
+                Tall <- as.integer(howWide)
+            } else {
+                Wide <- as.integer(howWide)
+                Tall <- as.integer(howTall)*2
+            }
+            options(width=Wide, height=Tall)
+            message(paste0(
+                "width=",Wide,", ",
+                "height=",Tall) )
+        }, silent=T
+    )
+    #options(width= as.integer( 
+    #    system("stty -a | head -n 1 | awk '{print $7}' | sed 's/;//'", intern=T)))
+
+    ### Greeting ###
+    cat("\n\033[38;5;11m     CHEAT SHEETS: \033[0m\n")
+    cat("source('~/Desktop/Packages/MiscUtils/RCheats.R') \n")
+
+
+    cat("\n\033[38;5;11m     R INFORMATION: \033[0m\n")
+    cat(commandArgs(), "\n")
+    # cat(paste(R.home(component = "home"), "\n"))
+    cat("~/Rprofile.site \n")
+    cat("wideScreen() \n")
+
+    cat("\n\033[38;5;11m     USER INFORMATION: \033[0m\n")
+    cat( paste0(Jordan, "\n\n"))
+
+    #cat("     Release Memory: \n")
+    #cat("as root: free && sync && echo 3 > /proc/sys/vm/drop_caches && free \n")
+    #cat("sudo swapoff -a && sudo swapon -a \n\n")
+
+}
+
+# http://misc.flogisoft.com/bash/tip_colors_and_formatting
+#cat("\033[38;5,92m red \033[0m \n")
+#cat("\033[38;5;11m red \033[0m \n")
+#library("crayon")
+#cat(yellow$bgMagenta$bold('Hello world!'),"\n")

@@ -1,0 +1,88 @@
+
+module add hdf5/1.10.0
+
+#module add cmake/3.6.1
+
+## ADD  C and Fortran
+module add gcc/7.1.0
+#module add intel/17.0
+module add boost/1.57.0
+
+#export CC=icc 
+#export CXX=icpc 
+#export FC=ifort  
+#export F77=ifort 
+
+## https://software.intel.com/en-us/node/528682
+## 'icc -DMKL_ILP64 '
+## 'ifort -i8 '
+
+# MPI: manually installed openmpi2
+module add mpich/3.1.4
+#module add openmpi/1.8.4
+
+
+module add rclone/1.23
+
+## Dropbox
+alias dropbox=/home/jadamso/.dropbox-dist/dropboxd
+
+
+## Add GCC support
+#module add gcc/7.1.0
+export PATH=$PATH:$HOME/bin:/software/gcc/7.1.0/bin
+#alias gcc=/software/gcc/7.1.0/bin/gcc
+
+#module add armadillo/7.950.0
+#module add openblas
+
+## Parallel
+export MAKEFLAGS="-j $(grep -c ^processor /proc/cpuinfo)"
+alias parallel='~/bin/parallel'
+
+#module add netcdf/4.4.0
+#module add gdal/1.11.1
+
+## GDAL
+export LD_LIBRARY_PATH=$HOME/lib:$LD_LIBRARY_PATH ## installed with --prefix=$HOME
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/lib ## for default install
+export PATH=$PATH:/Library/Frameworks/GDAL.framework/Programs
+
+
+## Proj4
+export PROJ_LIB=$HOME/proj-4.9.3/nad ## installed with --prefix=$HOME
+#alias proj=~/proj-4.9.2/src/proj
+
+
+## R
+alias Rscript='$HOME/bin/Rscript';
+alias R='$HOME/bin/R --no-save';
+alias Ropen='$HOME/microsoft-r-open-MRO-3.3.1/source/bin/R --no-save';
+export LD_LIBRARY_PATH=$HOME/lib64:$LD_LIBRARY_PATH
+#R_LIBS_USER=$HOME/R/x86_64-unknown-linux-gnu-library/3.3
+
+
+## TexLive
+export PATH=$PATH:$HOME/.local/bin:/usr/local/texlive/2016/bin/x86_64-linux
+
+## Java
+export JAVA_HOME=~/jdk1.8.0_131
+export PATH=$PATH:$JAVA_HOME:$JAVA_HOME/bin
+#export CLASSPATH=.:/usr/lib/R/site-library/rJava/jri/
+
+
+
+## Cluster Commands
+export LIBRARY_PATH=$HOME/lib64:$HOME/lib:$LIBRARY_PATH
+alias tiny='qsub -I -l \
+    select=1:ncpus=8:mpiprocs=8:mem=20gb,walltime=40:00:00'
+alias small='qsub -I -l \
+    select=1:ncpus=24:mpiprocs=24:mem=100gb,walltime=02:00:00'
+alias big='qsub -I -l \
+    select=1:ncpus=24:mpiprocs=24:mem=100gb,walltime=40:00:00'
+alias bigmem='qsub -I -q bigmem -l \
+    select=1:ncpus=24:mpiprocs=24:mem=500gb,walltime=72:00:00'
+
+
+
+## check how busy cluster is: pbstop; max walltime-72:00:00
