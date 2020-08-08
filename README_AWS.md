@@ -12,25 +12,32 @@ https://aws.amazon.com/blogs/big-data/running-r-on-aws/
 Create Amazon Lightsail Account
  * choose Amazon Linux for Shiny Server
  * choose Ubuntu for O-Tree Server
+ * *other software combinations may still work, but I have not tested them*
 
-Create an instance and a static public IP
- * https://lightsail.aws.amazon.com/ls/webapp/account/profile
-
+Create an instance with a static public IP
 
 Manually open up your firewall to traffic by creating 2 custom networks for TCP
- * port range 3838
- * port range 4151
+ * port 3838
+ * port 4151
     
-
 
 ## Setup SSH from local PC
 <!-- to delete old
 vim ~/.ssh/known_hosts
 -->
 
-manually download a private SSH key on AWS
+This step is only required if you do not want to use the terminal provided by AWS.
+*if on windows, use `putty' software for SSH*
+*if on linux, use the command line*
 
-format and install key
+<details>
+  <summary>click to expand</summary>
+
+#### Add main user
+On AWS, manually create and download a private SSH key
+ * https://lightsail.aws.amazon.com/ls/webapp/account/keys
+
+On PC, format and install key
 ```bash
 mv ~/Downloads/LightsailDefaultKey.pem \
     ~/.ssh/LightsailDefaultKey.pem
@@ -40,13 +47,13 @@ chmod 600 ~/.ssh/LightsailDefaultKey.pem
 ssh-add ~/.ssh/LightsailDefaultKey.pem
 ```
 
-login!
+On PC, SSH into AWS
 ```bash
 ## ssh -i LightsailDefaultKey.pem ec2-user@XXX.XXX.XXX.XXX
 ssh -i LightsailDefaultKey.pem ubuntu@XXX.XXX.XXX.XXX
 ```
 
-### Add aditional users
+#### Add aditional users
 new user generates key-pair
 upload to server (manually copy to computer with authorization, then scp to server)
 ```bash
@@ -63,66 +70,14 @@ sudo cp authorized_keys /root/.ssh/authorized_keys
 sudo service sshd restart ## restart
 ```
 
-# Common Programs
-
-```bash
-sudo sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/epel.repo
-
-sudo yum update -y 
-sudo yum install -y git git-daemon.x86_64 gitweb.noarch
-sudo yum install -y R-core.x86_64 R-devel.x86_64
-
-sudo yum install -y cmake 
-sudo yum install -y tmux tmux-top
-sudo yum install -y readline-devel libxml2-devel
-sudo yum install -y java-1.8.0-openjdk*
-sudo yum install -y libcurl-devel openssl-devel 
-sudo yum install -y pcre-devel.x86_64 pcre-tools.x86_64
-sudo yum install -y pandoc pango.x86_64 
-sudo yum install -y rrdtool-tcl.x86_64 tcl-devel.x86_64
-
-sudo yum install -y gcc-c++
+</details>
 
 
-sudo yum install -y \
-    xterm.x86_64 \
-    xorg-x11* \
-    dbus-x11.x86_64 \
-    libX*
-    
-sudo yum install -y \
-    libpng-devel.x86_64 \
-    libpng.x86_64 \
-    libpng-static.x86_64 \
-    optipng.x86_64
-  
-sudo yum install -y \
-    cairo.x86_64 \
-    cairo-devel.x86_64 \
-    cairo-tools.x86_64
-
-sudo yum install -y \
-    libgeotiff.x86_64 \
-    libgeotiff-devel.x86_64 \
-    libtiff.x86_64 \
-    libtiff-devel.x86_64
-
-sudo yum install -y \
-    openjpeg.x86_64 \
-    openjpeg-libs.x86_64 \
-    openjpeg-devel.x86_64
-    
-sudo yum install -y \
-    atop.x86_64 \
-    sysstat
-
-sudo yum install -y \
-    udunits2 \
-    udunits2-devel.x86_64
-        
-```
+# Shiny Server Setup
 
 
+SSH into AWS
+*the following commands are to be run on the server*
 
 ## Setup My Linux Environmental Variables 
 
@@ -145,8 +100,71 @@ sudo sed -i 's/dnf/yum/g' ~/Setup/DesktopInstall/YumPrograms.sh
 bash ~/Setup/DesktopInstall/YumPrograms.sh
 -->
 
+## Install Common Programs
 
-# Shiny Server Setup
+<!--
+## Install YUM if necessary, e.g. if on Ubuntu
+sudo apt-get update -y
+sudo apt-get install -y yum
+-->
+
+```bash
+
+## Enable repo
+sudo sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/epel.repo
+
+sudo yum update -y
+sudo yum install -y git git-daemon.x86_64 gitweb.noarch
+sudo yum install -y R-core.x86_64 R-devel.x86_64
+
+sudo yum install -y cmake 
+sudo yum install -y tmux tmux-top
+sudo yum install -y readline-devel libxml2-devel
+sudo yum install -y java-1.8.0-openjdk*
+sudo yum install -y libcurl-devel openssl-devel 
+sudo yum install -y pcre-devel.x86_64 pcre-tools.x86_64
+sudo yum install -y pandoc pango.x86_64 
+sudo yum install -y rrdtool-tcl.x86_64 tcl-devel.x86_64
+
+sudo yum install -y gcc-c++
+
+sudo yum install -y \
+    xterm.x86_64 \
+    xorg-x11* \
+    dbus-x11.x86_64 \
+    libX*
+
+sudo yum install -y \
+    libpng-devel.x86_64 \
+    libpng.x86_64 \
+    libpng-static.x86_64 \
+    optipng.x86_64
+
+sudo yum install -y \
+    cairo.x86_64 \
+    cairo-devel.x86_64 \
+    cairo-tools.x86_64
+
+sudo yum install -y \
+    libgeotiff.x86_64 \
+    libgeotiff-devel.x86_64 \
+    libtiff.x86_64 \
+    libtiff-devel.x86_64
+
+sudo yum install -y \
+    openjpeg.x86_64 \
+    openjpeg-libs.x86_64 \
+    openjpeg-devel.x86_64
+
+sudo yum install -y \
+    atop.x86_64 \
+    sysstat
+
+sudo yum install -y \
+    udunits2 \
+    udunits2-devel.x86_64
+
+```
 
 ## Make Dedicated User for Hosting Shiny Experiments
 
@@ -295,30 +313,6 @@ sudo apt-get install python-apt
 
 ```
 
-
-## Monitoring From AWS
-
-Follow the instructions here, https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/mon-scripts.html
-
-```bash
-
-sudo apt-get install unzip
-sudo apt-get install libwww-perl libdatetime-perl
-cd $HOME
-curl https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.2.zip -O
-unzip CloudWatchMonitoringScripts-1.2.2.zip && \
-rm CloudWatchMonitoringScripts-1.2.2.zip && \
-cd aws-scripts-mon
-```
-
-To post server metric every 5 minutes, manually append the crontab file `crontab -e` with
-```bash
-## Post Server Metrics Every 5 Minutes
- */5 * * * * ~/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron 
-```
-
-Open the CloudWatch console at https://console.aws.amazon.com/cloudwatch/
-
 ## Python Setup
 
 Install Python 3.7
@@ -334,7 +328,7 @@ sudo apt-get install -y \
 
 Declare Python3
 ```bash
-sudo update-alternatives  --set python3  /usr/bin/python3.7
+sudo update-alternatives --set python3 /usr/bin/python3.7
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
 sudo update-alternatives --config python3
 
@@ -392,8 +386,8 @@ sudo service postgresql restart
 ```bash
 pip3 install -U otree
 ```
-
 *For specific details, see* https://otree.readthedocs.io/en/latest/server/ubuntu.html
+
 
 ```bash
 echo  PATH="$PATH:$HOME/.local/bin" >> ~/.bashrc
@@ -401,6 +395,7 @@ echo 'alias python=python3.7' >> ~/.bashrc
 echo 'alias pip=pip3' >> ~/.bashrc
 ```
 
+restart server
 
 <!-- Setup for Cent-OS
 sudo yum install -y \
@@ -416,4 +411,34 @@ sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 sudo yum-config-manager --enable remi
 sudo yum install redis-devel.x86_64
 -->
+
+
+## Monitoring Performance From AWS
+
+This step is not necessary, but may be useful in testing
+<details>
+  <summary>click to expand</summary>
+
+Follow the instructions here, https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/mon-scripts.html
+
+```bash
+
+sudo apt-get install unzip
+sudo apt-get install libwww-perl libdatetime-perl
+cd $HOME
+curl https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.2.zip -O
+unzip CloudWatchMonitoringScripts-1.2.2.zip && \
+rm CloudWatchMonitoringScripts-1.2.2.zip && \
+cd aws-scripts-mon
+```
+
+To post server metric every 5 minutes, manually append the crontab file `crontab -e` with
+```bash
+## Post Server Metrics Every 5 Minutes
+ */5 * * * * ~/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron 
+```
+
+Open the CloudWatch console at https://console.aws.amazon.com/cloudwatch/
+
+</details>
 
