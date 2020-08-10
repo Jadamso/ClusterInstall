@@ -83,17 +83,14 @@ SSH into AWS
 
 
 ```bash
-
 mkdir $HOME/Setup
 cd $HOME/Setup
 git clone https://github.com/Jadamso/DesktopInstall.git
-
 
 PDIR=$HOME/Setup/DesktopInstall/ProfileFiles
 cd $PDIR
 cp $(ls -A $PDIR) $HOME
 source $HOME/.bashrc
-
 ```
 <!--
 sudo sed -i 's/dnf/yum/g' ~/Setup/DesktopInstall/YumPrograms.sh
@@ -109,7 +106,6 @@ sudo apt-get install -y yum
 -->
 
 ```bash
-
 ## Enable repo
 sudo sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/epel.repo
 
@@ -163,13 +159,11 @@ sudo yum install -y \
 sudo yum install -y \
     udunits2 \
     udunits2-devel.x86_64
-
 ```
 
 ## Make Dedicated User for Hosting Shiny Experiments
 
 ```bash 
-
 sudo useradd -r -m shiny
 sudo passwd -d shiny
 
@@ -191,7 +185,6 @@ sudo mkdir ~/R-Libs
 sudo cp -r $HOME/R-Libs /home/shiny/R-Libs
 sudo chmod 777 /home/shiny/R-Libs
 sudo chown -R shiny:shiny  /home/shiny/R-Libs
-    
 ```
 
 
@@ -247,7 +240,6 @@ bash RPostInstallSetup.sh
 must edit .bashrc path to include $HOME/.local/bin
 echo 'PATH=$PATH:$HOME/.local/bin' >> .bashrc
 echo 'export TERM=xterm-256color' | sudo tee --append /etc/profile
-
 ```
 
 <!--echo -e '
@@ -287,12 +279,10 @@ Optimized Math Setup, i.e.
 Cannot use a pdf viewer*
 
 ```bash
-
 sudo yum install -y \
     openmotif.x86_64 \
     urw-fonts \
     xpdf.x86_64 \
-
 ```
 
 
@@ -305,26 +295,22 @@ Login into Ubuntu server `ssh ubuntu@XX.XXX.XXX.XXX`
 
 Update all programs. When asked, "keep the local version"
 ```bash
-
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get dist-upgrade
 sudo apt-get install software-properties-common
 sudo apt-get install python-apt
-
 ```
 
 ## Python Setup
 
 Install Python 3.7
 ```bash 
-
 sudo apt-get install -y \
     python3-pip \
     python3.7 \
     python3.7-dev \
     python3.7-venv
-
 ```
 
 Declare Python3
@@ -332,18 +318,15 @@ Declare Python3
 sudo update-alternatives --set python3 /usr/bin/python3.7
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
 sudo update-alternatives --config python3
-
 ```
 
 Install Python3 Package Updater
-```
+```bash
 python3 -m pip install pip
 pip3 install --upgrade pip
-
 ```
 
-
-Set Python Environment Variables
+Set Environment Variables
 ```bash
 echo  PATH="$PATH:$HOME/.local/bin" >> ~/.bashrc
 echo 'alias python=python3.7' >> ~/.bashrc
@@ -355,20 +338,17 @@ echo 'alias pip=pip3' >> ~/.bashrc
 install server programs
 
 ```bash 
-
 sudo apt-get install -y \
     libpq-dev \
     postgresql \
     postgresql-contrib \
     redis-server \
     git
-
 ```
 
 setup postgres
 
 ```bash
-
 sudo su - postgres
     psql 
         CREATE DATABASE django_db;
@@ -377,19 +357,15 @@ sudo su - postgres
     exit
     
 echo 'export DATABASE_URL=postgres://postgres:postgres@localhost/django_db' >> ~/.bashrc
-
 echo 'export REDIS_URL=redis://localhost:6379' >> ~/.bashrc
-
 ```
 
 allow web-traffic in `hba_auth.conf`
 
 ```bash
-
 sudo vim /etc/postgresql/$(ls /etc/postgresql)/main/pg_hba.conf
 ## manually change the `METHOD` from `md5` to `trust` for lines `IPv4` and `IPv6`.
 sudo service postgresql restart
-
 ```
 
 
@@ -397,23 +373,19 @@ sudo service postgresql restart
 
 Install O-Tree
 ```bash
-
 pip3 install -U otree
-
 ```
 
 Restart Server
 
 
-## Post-Installation Not
+## Post-Installation Note
 
 After cloning your software, remember to install your requirements
 
 ```bash
-
 pip3 install -r requirements.txt
 otree resetdb
-
 ```
 
 
