@@ -298,7 +298,8 @@ sudo yum install -y \
 
 # O-Tree Server Setup 
 
-https://otree.readthedocs.io/en/latest/server/ubuntu.html
+These instructions are for O-Tree v3.0
+*For specific details, see* https://otree.readthedocs.io/en/latest/server/ubuntu.html
 
 Login into Ubuntu server `ssh ubuntu@XX.XXX.XXX.XXX`
 
@@ -338,6 +339,15 @@ Install Python3 Package Updater
 ```
 python3 -m pip install pip
 pip3 install --upgrade pip
+
+```
+
+
+Set Python Environment Variables
+```bash
+echo  PATH="$PATH:$HOME/.local/bin" >> ~/.bashrc
+echo 'alias python=python3.7' >> ~/.bashrc
+echo 'alias pip=pip3' >> ~/.bashrc
 ```
 
 ## Database Server Setup
@@ -368,6 +378,8 @@ sudo su - postgres
     
 echo 'export DATABASE_URL=postgres://postgres:postgres@localhost/django_db' >> ~/.bashrc
 
+echo 'export REDIS_URL=redis://localhost:6379' >> ~/.bashrc
+
 ```
 
 allow web-traffic in `hba_auth.conf`
@@ -383,19 +395,27 @@ sudo service postgresql restart
 
 ## Install O-Tree
 
+Install O-Tree
 ```bash
+
 pip3 install -U otree
-```
-*For specific details, see* https://otree.readthedocs.io/en/latest/server/ubuntu.html
 
+```
+
+Restart Server
+
+
+## Post-Installation Not
+
+After cloning your software, remember to install your requirements
 
 ```bash
-echo  PATH="$PATH:$HOME/.local/bin" >> ~/.bashrc
-echo 'alias python=python3.7' >> ~/.bashrc
-echo 'alias pip=pip3' >> ~/.bashrc
+
+pip3 install -r requirements.txt
+otree resetdb
+
 ```
 
-restart server
 
 <!-- Setup for Cent-OS
 sudo yum install -y \
