@@ -2,11 +2,9 @@
 Install instructions for my scientic programs on a computer cluster
 
 ```bash
-
 mkdir $HOME/Setup
 cd $HOME/Setup
 git clone https://github.com/Jadamso/ClusterInstall
-
 ```
 
 # Setup for Clusters
@@ -17,44 +15,28 @@ git clone https://github.com/Jadamso/ClusterInstall
 
 
 
-```bash
-
-IDIR="$HOME/Setup/ClusterInstall"
-cd $IDIR
-
-```
-
-
 ## Setup Bash Environment
 
 make sure `.bashrc`, `.bashrc_PC`, `.bashrc_CLUSTER` are available in `$HOME`
 
 ```bash
-
 IDIR="$HOME/Setup/ClusterInstall"
-PDIR=$IDIR/ProfileFiles
-cd $PDIR
-cp $(ls -A $PDIR) $HOME
+cp $(ls -A $IDIR/ProfileFiles) $HOME
 cat $HOME/.bashrc_CLUSTER
-
 ```
 
 optionally append your `$HOME/.bashrc` with files
 
 ```bash
-
 echo -e 'source $HOME/.bashrc_COMMON' >> $HOME/.bashrc
 echo -e 'source $HOME/.bashrc_CLUSTER' >> $HOME/.bashrc
-
 ```
 
-## Download Programs
+## Copy Programs
 
 ```bash
-
-cd ~
-git clone https://github.com/Jadamso/Programs.git
-
+IDIR="$HOME/Setup/ClusterInstall"
+cp $IDIR/Programs/* Programs
 ```
 
 
@@ -65,7 +47,6 @@ git clone https://github.com/Jadamso/Programs.git
 *must set PREFIX for ClusterSetup*
 
 ```bash
-
 export PREFIX=$HOME
 
 #### Linux Utilities
@@ -99,11 +80,11 @@ bash StorageSetup.sh
     # Set up AWS to screen for password info
     # https://github.com/awslabs/git-secrets
 bash CSVSetup.sh
-
 ```
 
 
 
+<!---
 ## Math-From-Scratch Setup (No Longer Working)
 
 ```bash
@@ -119,3 +100,5 @@ bash GCCSetup.sh
 bash PythonSetup.sh *creates problems*
 
 ```
+--->
+

@@ -1,0 +1,164 @@
+#! /bin/bash
+###################################################################
+# Jordan Adamson 
+###################################################################
+shopt -s expand_aliases
+source $HOME"/.bashrc"
+
+
+show_help() {
+cat << EOF
+Usage: ${0##*/} [-hIsfF] [i:o:p:P: ARG] [FOLDER]...
+Upload FOLDER. Example in current directory, "Code2 -f RBLOCK_INFO.R"
+
+    -h          display this help and exit
+    -i          specify input directory
+    -o          specify output directory
+    -f          specify source code in "./" and output folders "../R_Output/"
+    -F          specify source code in "./" and output folders "./R_Output"
+    -p,-P     paper folder name, directory name
+    -s          use standardized IO
+    -I          shell escape
+EOF
+}
+
+
+## Defaults
+indir=$(pwd)/
+outdir=$(pwd)/
+PDIR=$HOME/Dropbox/
+InfoFlag="false"
+
+while getopts 'i:o:fFp:P:sIh' opt
+do
+    case "${opt}" in
+
+        ## Generic IO
+        i) indir="${OPTARG}";;
+        o) outdir="${OPTARG}";;
+        
+        ## Semi-Standardized IO
+        f)
+            indir=$(pwd)/
+            outdir=$(dirname $indir)/R_Output/;;
+        F)
+            indir=$(pwd)/
+            outdir="$indir"R_Output/;;
+
+        ## Fully-Standardized IO
+        P) PDIR="${OPTARG}";;
+        p) PAPER="${OPTARG}";;
+        s)
+            indir="$PDIR$PAPER/Code/R_Code/"
+            outdir="$PDIR$PDIR/$PAPER/Code/R_Output/";;
+
+        ## Flags
+        I) InfoFlag="true";;
+        h) show_help 1>&2 && exit ;;
+
+    esac
+done
+
+
+cd $outdir
+echo -e "\e[0;92m $outdir \e[0m"
+
+#------------------------------------------------------------------
+###################
+# Only View Output
+###################
+
+#if [[ $@ =~ "-v" ]] || [[ $@ =~ "--view" ]]; then
+#    rfile=$(find $outdir*".Rout")
+#    declare -a vnames=$(echo $rfile)
+#    for name in "${vnames[@]}"; do
+#        ## Files
+#        infile=$indir"RBLOCK_"$name".R";
+#        outfile=$outdir"RBLOCK_"$name".Rout";
+#        ## Commands
+#        head -n 3 $infile;
+#        tail -n 5 $outfile;
+#        echo
+#    done
+#    exit
+#else
+
+#------------------------------------------------------------------
+###################
+# Software Information
+###################
+
+if [[ "$InfoFlag" == "true" ]]
+then
+    ## Name of RBLOCK
+    filename="RBLOCK_INFO"
+    infile=$indir$filename".R";
+    outfile=$outdir$filename".Rout";
+    
+    echo -e "\e[0;93m $filename \e[0m"
+    
+    echo '
+    #########################
+    # Print any information needed for replication
+    #########################
+    
+    ## Current Date and Time
+    Sys.time()
+    
+    ## Prints computer information
+    Sys.info()
+
+    ## Prints R information
+    sessionInfo()
+
+    ## Rprofile loaded every session
+    readLines( paste0( R.home(), "/etc/Rprofile.site"))
+
+    ## Renvironment loaded every session
+    readLines( paste0( R.home(), "/etc/Renviron"))
+    ' > $infile
+
+    R CMD BATCH --no-save --quiet --no-restore  $infile $outfile
+    #echo "infile=$infile" >>  $outfile
+    
+fi
+
+#------------------------------------------------------------------
+###################
+# Running Codes
+###################
+
+start_time=$(date +%s) #+%M:%S
+
+# Which Scripts 
+shift $(($OPTIND - 1))
+declare -a script_array=( "$@" )
+
+## Run Scripts
+for script_s in "${script_array[@]}"
+do
+    ## Name of RBLOCK
+    filename=$(echo $script_s  | awk '{ gsub(/\.R/, ""); print }')
+    infile=$indir$filename".R";
+    outfile=$outdir$filename".Rout";
+    
+    echo -e "\e[0;93m $filename \e[0m"
+    
+    ## Run Code
+    head -n 3 $infile  ;
+    echo "... Running" ;
+    R CMD BATCH --no-save --quiet --no-restore  $infile $outfile
+    #Rscript --no-save --no-restore --no-site-file --verbose $infile >> $outfile ;
+
+    ## Print Output
+    tail -n 5 $outfile ;
+    echo
+    
+done
+echo
+
+
+end_time=$(date +%s) #+%M:%S
+echo "RunTime: $[$end_time - $start_time] Seconds"
+
+

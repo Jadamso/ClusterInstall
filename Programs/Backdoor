@@ -1,0 +1,59 @@
+#! /bin/bash
+#######################################################################
+# Jordan Adamson 
+#######################################################################
+shopt -s expand_aliases
+#source $HOME"/.bashrc"
+
+USER=$1
+#----------------------------------------------------------------------
+##################
+# Find and SSH into User Node
+################## 
+
+## List All Jobs
+JOBS=$(qstat -u $USER | grep .pbs | awk '{print $1}')
+for i in $JOBS; do
+	jobs+=( ${i%.pbs02} )
+done
+echo $jobs
+
+
+## Choose Job=i
+if [[ $# -eq 0 ]] ; then
+	i=0
+else
+	i=$2
+fi
+
+
+## Get Node for Job=i
+NODE=$(qstat -xf ${jobs[i]} | grep exec_host)
+NODE=${NODE:15}
+
+
+## Format NODE for SSH
+pos1=$(echo $NODE | grep -aob '/')
+pos1=$(( ${pos1%':/'} +1 ))
+
+
+## SSH into Node
+SSHNODE=${NODE:0:pos1}
+ssh $SSHNODE
+
+
+exit
+
+## S
+#top -u "$USER"
+#top -b -d 1800 -n 1000 > top-output.txt
+
+#ssh $SSHNODE -t "top -u $USER"
+# pbstop -m 24 -u "$USER"
+#qstat -xf $jobs[i]
+#qpeek -f ${jobs[i]
+
+#tmux rename-session [-t current-name] [new-name]
+
+
+

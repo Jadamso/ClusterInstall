@@ -1,0 +1,76 @@
+#! /bin/bash
+###################################################################
+# Jordan Adamson 
+###################################################################
+shopt -s expand_aliases
+source $HOME"/.bashrc"
+
+#------------------------------------------------------------------
+###################
+# CHUNK A
+###################
+
+# Sequential dependancy:
+#https://wikis.nyu.edu/display/NYUHPC/Tutorial+-+Submitting+a+job+using+qsub#Tutorial-Submittingajobusingqsub-dependency_loop
+#job=`qsub pbs.script.0`
+#for i in {1..9}
+#do
+#    job_next=`qsub -W depend=afterok:$job pbs.script.$i`
+#    job=$job_next
+#done
+
+
+## Defaults
+HDIR=Desktop
+EMAIL=
+
+while getopts 'm:w:q:c:n:p:s:W:' opt
+do
+    case "${opt}" in
+        ## Resource Specification
+        m) mem="${OPTARG}";;
+        w) walltime="${OPTARG}";;
+        q) que="-q ${OPTARG}";;
+        c) cores="${OPTARG}";;
+        n) nodes="${OPTARG}";;
+        ## Paper and Block Names
+        p) PAPER="${OPTARG}";;
+        s) SCRIPT="${OPTARG}";;
+        W) DEP="-W depend=afterok:${OPTARG}";;
+        H) HDIR="${OPTARG}";;
+    esac
+done
+
+outdir="$HOME/$HDIR/$PAPER/Code/R_Output/"
+BASHSCRIPTout="$outdir$SCRIPT".shout
+
+
+## Submit Job 
+echo -e "Code $PAPER $SCRIPT" | qsub $que $DEP \
+    -l select=$nodes:ncpus=$cores:mpiprocs=$cores:mem=$mem,walltime=$walltime \
+    -e $BASHSCRIPTout \
+    -o $BASHSCRIPTout \
+    -j oe \
+    -N $SCRIPT \
+    -M $EMAIL &
+
+
+echo -e "Code $PAPER $SCRIPT" 
+
+
+exit
+
+
+
+
+### Trial Job 
+#echo -e "qsub $que \
+#    -l select=$nodes:ncpus=$cores:mpiprocs=$cores:mem=$mem,walltime=$walltime \
+#    -e $BASHSCRIPTout \
+#    -o $BASHSCRIPTout \
+#    -j oe \
+#    -N $SCRIPT \
+#    $DEP \
+#    -M $EMAIL
+#"
+

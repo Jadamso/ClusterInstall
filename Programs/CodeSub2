@@ -1,0 +1,59 @@
+#! /bin/bash
+####################################################################
+# Jordan Adamson 
+####################################################################
+shopt -s expand_aliases
+source $HOME"/.bashrc"
+
+#-------------------------------------------------------------------
+###################
+# Which Script
+###################
+
+
+## Defaults
+HDIR=Desktop
+EMAIL=
+
+while getopts 'm:w:q:c:n:W:o:s:N:v' flag; do
+    case "${flag}" in
+        ## Resource Specification
+        m) mem="${OPTARG}";;
+        w) walltime="${OPTARG}";;
+        q) que="-q ${OPTARG}";;
+        c) cores="${OPTARG}";;
+        n) nodes="${OPTARG}";;
+        ## Paper and Block Names
+        W) DEP="-W depend=afterok:${OPTARG}";;
+        o) BASHSCRIPTout="${OPTARG}";;
+        p) PAPER="${OPTARG}";;
+        s) SCRIPT="${OPTARG}";;
+        N) NAME="${OPTARG}";;
+        H) HDIR="${OPTARG}";;
+        ##  Verbose
+        v) echo -e "$BASHSCRIPTout\n" ;;
+    esac
+done
+
+#-------------------------------------------------------------------
+###################
+# Submit Job 
+###################
+
+outdir="$HOME/$HDIR/$PAPER/Code/R_Output/"
+BASHSCRIPTout="$outdir$SCRIPT".shout
+
+
+## Submit Job 
+echo -e "Code2 $PAPER -s $SCRIPT -H $HDIR" | qsub $que $DEP \
+    -l select=$nodes:ncpus=$cores:mpiprocs=$cores:mem=$mem,walltime=$walltime \
+    -e $BASHSCRIPTout \
+    -o $BASHSCRIPTout \
+    -j oe \
+    -N $NAME \
+    -M $EMAIL &
+    
+    #-- $SCRIPT &
+
+exit
+
