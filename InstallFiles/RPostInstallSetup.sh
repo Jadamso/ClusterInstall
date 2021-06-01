@@ -8,8 +8,8 @@ source "EnvironmentSetup.sh"
 mkdir ~/R-Libs
 
 ## Rprofile
-sudo cp ~/Rprofile.site ~/lib64/R/etc/Rprofile.site ## Source Build
-sudo cp ~/Rprofile.site /usr/lib64/R/etc/Rprofile.site ##
+#sudo cp ~/Rprofile.site ~/lib64/R/etc/Rprofile.site ## Source Build
+#sudo cp ~/Rprofile.site /usr/lib64/R/etc/Rprofile.site ## Repo Build
 #~/Desktop/Packages/ClusterInstall/ProfileFiles/Rprofile.site
 
 ## Java
@@ -66,7 +66,7 @@ done
 ##################
 
 ## Common
-for pack in roxygen2 RCurl Matrix abind mgcv spam spam64 sp maptools raster rgeos rgdal spatstat fields gdalUtils cleangeo doMC foreach stargazer reshape2 plyr pryr operators data.table formattable gridExtra ggplotify
+for pack in roxygen2 RCurl Matrix abind mgcv spam spam64 sp maptools raster rgeos rgdal spatstat sf fields gdalUtils cleangeo doMC foreach stargazer reshape2 plyr pryr operators data.table formattable gridExtra ggplotify sandwich
 do
 R -e "install.packages(\"$pack\")"
 done

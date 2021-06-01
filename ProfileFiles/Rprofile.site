@@ -114,23 +114,19 @@ if (!quiet){
     #    system("stty -a | head -n 1 | awk '{print $7}' | sed 's/;//'", intern=T)))
 
     ### Greeting ###
-    cat("\n\033[38;5;11m     CHEAT SHEETS: \033[0m\n")
-    cat("source('~/Desktop/Packages/MiscUtils/RCheats.R') \n")
-
-
-    cat("\n\033[38;5;11m     R INFORMATION: \033[0m\n")
+    cat("\n\033[38;5;11m USER INFORMATION: \033[0m\n")
+    cat( paste0(Jordan, "\n"))
     cat(commandArgs(), "\n")
-    # cat(paste(R.home(component = "home"), "\n"))
-    cat("~/Rprofile.site \n")
-    cat("wideScreen() \n")
+    cat("~/Rprofile.site \n\n")
+    ## cat(paste(R.home(component = "home"), "\n"))
 
-    cat("\n\033[38;5;11m     USER INFORMATION: \033[0m\n")
-    cat( paste0(Jordan, "\n\n"))
 
-    #cat("     Release Memory: \n")
-    #cat("as root: free && sync && echo 3 > /proc/sys/vm/drop_caches && free \n")
-    #cat("sudo swapoff -a && sudo swapon -a \n\n")
-
+    ##cat("     Release Memory: \n")
+    ##cat("as root: free && sync && echo 3 > /proc/sys/vm/drop_caches && free \n")
+    ##cat("sudo swapoff -a && sudo swapon -a \n\n")
+    ##cat("\n\033[38;5;11m     CHEAT SHEETS: \033[0m\n")
+    ##cat("source('~/Desktop/Packages/MiscUtils/RCheats.R') \n")
+    ##cat("wideScreen() \n")
 }
 
 # http://misc.flogisoft.com/bash/tip_colors_and_formatting
